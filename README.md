@@ -1,6 +1,7 @@
-# How to write a game of snake in 10 lines of code
+# How to write a game of snake in 12 lines of code
 
-## Setup
+
+
 First of all a want to declare this article the founding document of snaketronics.
 
 > Snaketronics:
@@ -8,16 +9,19 @@ First of all a want to declare this article the founding document of snaketronic
 > The scientific pursuit of the nature of computational snakes and all their
 > implementations and applications in modern society
 
-Then, secondly there is a disclosure. We will be using `PyTorch` and `NumPy`. This
-could have been done compleatly in either, but I prefer the `PyTorch` tensor
-API and `NumPy` has a nice function called `unravel_index` that we will be using.
+Then, secondly there is a disclosure. Before you start screaming
+about line length, all of the lines are in fact PEP8 compliant.
 
 We are also programming a version of Snake where the snake can loop around the
 screen. However, you can change 2 lines to produce the original version of snake,
 but I will leave that as an exercise for the reader.
 
-I will not be counting the imports and function declaration (call it freedom of
-artistic expression), so I'll get that out of the way first. The code is also
+We will be using `PyTorch` and `NumPy`. This
+could have been done compleatly in either, but I prefer the `PyTorch` tensor
+API and `NumPy` has a nice function called `unravel_index` that we will be using.
+
+I will not be counting the imports and function declaration, call it freedom of
+artistic expression, so I'll get that out of the way first. The code is also
 not very readable, sensible or propper in any way, shape or form. But, sometimes
 it's important to not write code that's "correct", but code that is fun.
 
@@ -31,8 +35,8 @@ def do(snake, action):
     '''This is where the magic happens :) '''
 ```
 
-Now that we've got everythhing set up; Buckle up Buckaroo, because this is going
-to be a wild ride.
+Now that we've got all of the formalities out of the way; Buckle up Buckaroo,
+because this is going to be a wild ride.
 
 ## Encodings
 
