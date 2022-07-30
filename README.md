@@ -61,3 +61,5 @@ to a 2d index. At last we want to turn them into tensors so that we can do math 
 [pos_cur, pos_prev] = [T(unravel(x, snake.shape)) for x in snake.flatten().topk(2)[1]]
 ```
 
+![Getting the positions](imgs/snake-get-pos.drawio.svg)
+
