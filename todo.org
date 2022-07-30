@@ -1,1 +1,28 @@
-* TODO Improve color scheme
+* Design
+** TODO Improve color scheme
+
+* Sections:
+** DONE Introduction
+*** DONE Text
+*** DONE Illustration
+** DONE Setup
+*** DONE Text
+*** DONE Illustration
+** DONE Find positions
+*** DONE Text
+*** DONE Illustration
+** DONE Calculate next position
+*** DONE Text
+*** DONE Illustration
+** TODO How to die
+*** CRNT Text
+*** CRNT Illustration
+** TODO How to eat
+*** CRNT Text
+*** CRNT Illustration
+** TODO How to move
+*** CRNT Text
+*** CRNT Illustration
+
+* Proofing
+** TODO Coorect code in README.md
