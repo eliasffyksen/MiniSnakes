@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 
 def do(snake, action):
     [pos_cur, pos_prev] = [T(unravel(x, snake.shape)) for x in snake.flatten().topk(2)[1]]
-    pos_next = pos_cur + (pos_cur - pos_prev) @ T([[0,-1],[1,0]]).matrix_power(3 + action)
-    pos_next = pos_next.clamp(T([0,0]), T(snake.shape) - 1)
+    pos_next = (pos_cur - pos_prev) @ T([[0,-1],[1,0]]).matrix_power(3 + action)
+    pos_next = (pos_cur + pos_next) % T(snake.shape)
 
-    if (pos_cur == pos_next).all() or (snake[tuple(pos_next)] > 0).any():
+    if (snake[tuple(pos_next)] > 0).any():
         return (snake[tuple(pos_cur)] - 2).item()
     if snake[tuple(pos_next)] == -1:
         snake[unravel((snake == 0).flatten().to(t.float).multinomial(1)[0], snake.shape)] = -1
