@@ -35,8 +35,10 @@ def do(snake, action):
     '''This is where the magic happens :) '''
 ```
 
-Now that we've got all of the formalities out of the way; Buckle up Buckaroo,
-because this is going to be a wild ride.
+Now that we've got all of the formalities out of the way there is only on thing
+left to say:
+
+Buckle up Buckaroo, because this is going to be a wild ride.
 
 ## Encodings
 
@@ -65,12 +67,14 @@ you can't go backwards.
 
 # Code
 
+With an absolute banger of an encoding in place we can pick up where we left off and get into the
+trenches of actually writing code.
+
 ## Getting current position
 
 ![Getting the positions](imgs/snake-get-pos.drawio.svg)
 
-Now, with the formalities out of the way, we can get pick up where we left off and get into the
-trenches of actually writing code. The first thing to do is to get the current and previous
+The first thing to do is to get the current and previous
 possition of the snake head. We can do this with the `topk(2)`, since the head of the snake
 is always the largest int and the previous head is the second largest. The only problem we have
 is that the `topk` method works along one dimention at a time. For this reason we need to `flatten()`
