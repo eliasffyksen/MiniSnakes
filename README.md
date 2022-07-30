@@ -36,5 +36,5 @@ every cell of the snake increases with 1 towards the head and the food is -1. So
 snake of size N, the tail will be 1 and the head will be N. The image below shows an
 illustration of the encoding:
 
-!(imgs/snake-encoding.drawio.svg)
+![Snale Image](imgs/snake-encoding.drawio.svg)
 
