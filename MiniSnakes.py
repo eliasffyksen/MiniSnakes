@@ -3,31 +3,38 @@ from torch import tensor as T
 from numpy import unravel_index as unravel
 import matplotlib.pyplot as plt
 
-def do(snake, action):
-    [pos_cur, pos_prev] = [T(unravel(x, snake.shape)) for x in snake.flatten().topk(2)[1]]
-    pos_next = (pos_cur - pos_prev) @ T([[0,-1],[1,0]]).matrix_power(3 + action)
-    pos_next = (pos_cur + pos_next) % T(snake.shape)
+
+def do(snake: t.Tensor, action: int):
+    positions = snake.flatten().topk(2)[1]
+    [pos_cur, pos_prev] = [T(unravel(x, snake.shape)) for x in positions]
+    rotation = T([[0, -1], [1, 0]]).matrix_power(3 + action)
+    pos_next = (pos_cur + (pos_cur - pos_prev) @ rotation) % T(snake.shape)
 
     if (snake[tuple(pos_next)] > 0).any():
         return (snake[tuple(pos_cur)] - 2).item()
     if snake[tuple(pos_next)] == -1:
-        snake[unravel((snake == 0).flatten().to(t.float).multinomial(1)[0], snake.shape)] = -1
+        snake[unravel((snake == 0).flatten().to(t.float)
+              .multinomial(1)[0], snake.shape)] = -1
     else:
         snake[snake > 0] -= 1
 
     snake[tuple(pos_next)] = snake[tuple(pos_cur)] + 1
 
-snake = t.zeros((64, 64), dtype=t.int)
-snake[0,:3] = T([1, 2, -1])
 
-fig, ax = plt.subplots(1,1)
+snake = t.zeros((64, 64), dtype=t.int)
+snake[0, :3] = T([1, 2, -1])
+
+fig, ax = plt.subplots(1, 1)
 img = ax.imshow(snake)
 action = 1
+
 
 def key_press(event):
     global action
     if event.key in ['a', 'd']:
         action = {'a': 0, 'd': 2}[event.key]
+
+
 fig.canvas.mpl_connect('key_press_event', key_press)
 
 while True:
