@@ -27,10 +27,9 @@
               cmake
 
               python310
-              pybind11
               pytorch
-              tqdm
               matplotlib
+              pycodestyle
             ];
           };
         }
