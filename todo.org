@@ -17,9 +17,9 @@
 ** DONE How to die
 *** DONE Text
 *** BUMP Illustration
-** TODO How to eat
-*** TODO Text
-*** TODO Illustration
+** DONE How to eat
+*** DONE Text
+*** DONE Illustration
 ** TODO How to move
 *** TODO Text
 *** TODO Illustration

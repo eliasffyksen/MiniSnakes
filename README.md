@@ -125,3 +125,31 @@ we start the game at snake length 2). To get the length we just have to get the 
 if (snake[tuple(pos_next)] > 0).any():
     return (snake[tuple(pos_cur)] - 2).item()
 ```
+
+## How to eat
+
+![How to eat diagram](imgs/snake-eat.drawio.svg)
+
+Time to brace yourself, the next 3 lines is the most complicated in the game.
+
+To check if the snake is eating we check if `snake[pos_next]` is `-1`. If this is the case
+then we need to find all positions on the board which currently is currently `0`. This
+is empty spots which we can pontentially put food.
+
+When we have all of these positions we need to select one of these indexes at random,
+then update that value to be `-1`. We don't need to edit the current `-1` entry as
+the snake will overwrite it when it moves.
+
+To find all the places that is currently `0` we just use `snake == 0` (this returns
+a boolean tensor). Next we do `.multinomial(1)` on this select one at random. However,
+`multinomial` works the same way as `topk` as well as only taking floats. Therefore,
+we need to do both `.flatten()` and `.to(t.float)` first.
+
+Once this is done we need to `unravel` it again to get a 2d index and update the `snake`
+tensor.
+
+```python
+if snake[tuple(pos_next)] == -1:
+    pos_food = (snake == 0).flatten().to(t.float).multinomial(1)[0]
+    snake[unravel(pos_food, snake.shape)] = -1
+```
