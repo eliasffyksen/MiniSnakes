@@ -19,30 +19,3 @@ def do(snake: t.Tensor, action: int):
         snake[snake > 0] -= 1
 
     snake[tuple(pos_next)] = snake[tuple(pos_cur)] + 1
-
-
-snake = t.zeros((64, 64), dtype=t.int)
-snake[0, :3] = T([1, 2, -1])
-
-fig, ax = plt.subplots(1, 1)
-img = ax.imshow(snake)
-action = 1
-
-
-def key_press(event):
-    global action
-    if event.key in ['a', 'd']:
-        action = {'a': 0, 'd': 2}[event.key]
-
-
-fig.canvas.mpl_connect('key_press_event', key_press)
-
-while True:
-    score = do(snake, action)
-    if score is not None:
-        print('Score:', score)
-        break
-    img.set_data(snake)
-    fig.canvas.draw_idle()
-    action = 1
-    plt.pause(0.1)
