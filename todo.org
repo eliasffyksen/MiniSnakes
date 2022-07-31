@@ -14,16 +14,19 @@
 ** DONE Calculate next position
 *** DONE Text
 *** DONE Illustration
-** TODO How to die
-*** CRNT Text
-*** CRNT Illustration
+** DONE How to die
+*** DONE Text
+*** BUMP Illustration
 ** TODO How to eat
-*** CRNT Text
-*** CRNT Illustration
+*** TODO Text
+*** TODO Illustration
 ** TODO How to move
-*** CRNT Text
-*** CRNT Illustration
+*** TODO Text
+*** TODO Illustration
 ** TODO Interface
+*** TODO Text
+*** TODO Illustration
 
 * Proofing
 ** TODO Coorect code in README.md
+** Mistake in getting current positions `topk[1][2]` -> `topk[1][2]`

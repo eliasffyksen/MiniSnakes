@@ -21,7 +21,7 @@ could have been done compleatly in either, but I prefer the `PyTorch` tensor
 API and `NumPy` has a nice function called `unravel_index` that we will be using.
 
 I will not be counting the imports and function declaration, call it freedom of
-artistic expression, so I'll get that out of the way first. The code is also
+artistic expression. The code is also
 not very readable, sensible or propper in any way, shape or form. But, sometimes
 it's important to not write code that's "correct", but code that is fun.
 
@@ -82,7 +82,8 @@ the tensor first, get the topk then use the forementioned `unravel_index` to con
 to a 2d index. At last we want to turn them into tensors so that we can do math on them as well.
 
 ```python
-[pos_cur, pos_prev] = [T(unravel(x, snake.shape)) for x in snake.flatten().topk(2)[1]]
+positions = snake.flatten().topk(2)[1]
+[pos_cur, pos_prev] = [T(unravel(x, snake.shape)) for x in positions]
 ```
 
 ## Calculating the next position
@@ -104,6 +105,23 @@ take the new location, and pairwise mod it with the size of the board to generat
 around functionality.
 
 ```python
-pos_next = (pos_cur - pos_prev) @ T([[0,-1],[1,0]]).matrix_power(3 + action)
-pos_next = (pos_cur + pos_next) % T(snake.shape)
+rotation = T([[0, -1], [1, 0]]).matrix_power(3 + action)
+pos_next = (pos_cur + (pos_cur - pos_prev) @ rotation) % T(snake.shape)
+```
+
+## How to die
+
+Since we now have the next position it is fairly trivial to figure out whether the snake should
+die or not. We just have to check if `snake[touple(pos_next)] > 0` since the only values with more then
+`0` on our board is values where the snake currently is.
+
+If the snake is dying then we want to return the score of the current game. This is also fairly
+trivial since the score of the game is the same as the length of the snake minus 2 (assuming
+we start the game at snake length 2). To get the length we just have to get the value of
+`pos_cur` since this is the current head of the snake. That means the current score is
+`snake[tuple(pos_cur)] - 2`.
+
+```python
+if (snake[tuple(pos_next)] > 0).any():
+    return (snake[tuple(pos_cur)] - 2).item()
 ```
