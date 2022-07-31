@@ -13,8 +13,8 @@ def do(snake: t.Tensor, action: int):
     if (snake[tuple(pos_next)] > 0).any():
         return (snake[tuple(pos_cur)] - 2).item()
     if snake[tuple(pos_next)] == -1:
-        snake[unravel((snake == 0).flatten().to(t.float)
-              .multinomial(1)[0], snake.shape)] = -1
+        pos_food = (snake == 0).flatten().to(t.float).multinomial(1)[0]
+        snake[unravel(pos_food, snake.shape)] = -1
     else:
         snake[snake > 0] -= 1
 
