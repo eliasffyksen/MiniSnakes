@@ -111,6 +111,8 @@ pos_next = (pos_cur + (pos_cur - pos_prev) @ rotation) % T(snake.shape)
 
 ## How to die
 
+Ah, the age old question. Oh wait, what were we talking about? Thats right, snakes, never mind!
+
 Since we now have the next position it is fairly trivial to figure out whether the snake should
 die or not. We just have to check if `snake[touple(pos_next)] > 0` since the only values with more then
 `0` on our board is values where the snake currently is.
@@ -152,4 +154,28 @@ tensor.
 if snake[tuple(pos_next)] == -1:
     pos_food = (snake == 0).flatten().to(t.float).multinomial(1)[0]
     snake[unravel(pos_food, snake.shape)] = -1
+```
+
+## How to move
+
+![Diagram moving](imgs/snake-move.drawio.svg)
+
+In order to move the snake we shrink the current snake and append a new head at
+the next position.
+
+However, we only want to shrink the snake if we are not eating, because if we are
+then we want to extend the size with 1 square.
+
+Therefore, we append an else clause on the previous if statement to shrink the snake.
+Since the snake is numbered and the last tail cell is 1 we can subtract one from every
+cell on the grid larger then 0. This will shrink the snake by 1 cell.
+
+To append the new head we need to set the next position to the value of the current
+position plus 1.
+
+```python
+else:
+    snake[snake > 0] -= 1
+
+snake[tuple(pos_next)] = snake[tuple(pos_cur)] + 1
 ```
