@@ -7,7 +7,7 @@ First of all a want to declare this article the founding document of snaketronic
 > The scientific pursuit of the nature of computational snakes and all their
 > implementations and applications in modern society
 
-Then, secondly there is a disclosure. Before you start screaming
+Then, secondly, there is a disclosure. Before you start screaming
 about line length, all of the lines are in fact PEP8 compliant.
 
 We are also programming a version of Snake where the snake can loop around the
@@ -15,13 +15,13 @@ screen. However, you can change 2 lines to produce the original version of snake
 but I will leave that as an exercise for the reader.
 
 We will be using `PyTorch` and `NumPy`. This
-could have been done compleatly in either, but I prefer the `PyTorch` tensor
+could have been done completely in either, but I prefer the `PyTorch` tensor
 API and `NumPy` has a nice function called `unravel_index` that we will be using.
 
 I will not be counting the imports and function declaration, call it freedom of
 artistic expression. The code is also
-not very readable, sensible or propper in any way, shape or form. But, sometimes
-it's important to not write code that's "correct", but code that is fun.
+not very readable, sensible, or proper in any way, shape, or form. But, sometimes
+it's important to not write code that's "correct", but fun code.
 
 ```python
 import torch as t
@@ -33,7 +33,7 @@ def do(snake, action):
     '''This is where the magic happens :) '''
 ```
 
-Now that we've got all of the formalities out of the way there is only on thing
+Now that we've got all of the formalities out of the way there is only one thing
 left to say:
 
 Buckle up Buckaroo, because this is going to be a wild ride.
@@ -42,42 +42,42 @@ Buckle up Buckaroo, because this is going to be a wild ride.
 
 ![Snaie Image](imgs/snake-encoding.drawio.svg)
 
-The cruisal part of this code is the encoding of the snake state. As any computer
-scientist worth his or her salt should know: "It's all about the data, baby!".
+The crucial part of this code is the encoding of the snake state. As any computer
+Scientists worth his or her salt should know: It's all about the data, baby!
 
 We want the encoding to be a matrix such that if displayed with `plt.imshow` it shows a
 playable game of snake. It also needs to encode all of the information needed
 to play snake in a manner that makes it easy to update.
 
-For this reason we will encode the state as a matrix of integers where every open
+For this reason, we will encode the state as a matrix of integers where every open
 cell in the game is 0, the tail of the snake is 1, every cell of the snake increases
 with 1 towards the head and the food is -1. So; for a snake of size N, the tail will
 be 1 and the head will be N.
 
 
-Secondly we will be using a slightly odd encoding for actions. Instead of the traditional
-`[up, right, down, left]` encoding we will be steeling the the action encoding from
+Secondly, we will be using a slightly odd encoding for actions. Instead of the traditional
+`[up, right, down, left]` encoding we will be stealing the action encoding from
 the article [Teaching a computer how to play Snake with Q-Learning](
 https://towardsdatascience.com/teaching-a-computer-how-to-play-snake-with-q-learning-93d0a316ddc0)
 by Jason Lee. This encoding is `[left, straight, right]` relative to the current snake direction.
 This is slightly harder to play for a human, but every action is always a valid action since
-you can't go backwards.
+you can't go backward.
 
 # Code
 
-With an absolute banger of an encoding in place we can pick up where we left off and get into the
+With an absolute banger of encoding in place, we can pick up where we left off and get into the
 trenches of actually writing code.
 
-## Getting current position
+## Getting the current position
 
 ![Getting the positions](imgs/snake-get-pos.drawio.svg)
 
 The first thing to do is to get the current and previous
-possition of the snake head. We can do this with the `topk(2)`, since the head of the snake
+position of the snake head. We can do this with the `topk(2)`, since the head of the snake
 is always the largest int and the previous head is the second largest. The only problem we have
-is that the `topk` method works along one dimention at a time. For this reason we need to `flatten()`
-the tensor first, get the topk then use the forementioned `unravel_index` to convert it back
-to a 2d index. At last we want to turn them into tensors so that we can do math on them as well.
+is that the `topk` method works along one dimension at a time. For this reason, we need to `flatten()`
+the tensor first, gets the topk then use the aforementioned `unravel_index` to convert it back
+to a 2d index. At last, we want to turn them into tensors so that we can do the math on them as well.
 
 ```python
 positions = snake.flatten().topk(2)[1]
@@ -88,15 +88,15 @@ positions = snake.flatten().topk(2)[1]
 
 ![Next position diagram](imgs/snake-next-pos.drawio.svg)
 
-In order to calculate the next position we do `pos_cur - pos_prev`. This yields the a vector
+To calculate the next position we do `pos_cur - pos_prev`. This yields a vector
 pointing in the current direction of travel of the snake. Next, we want to rotate it, but how much?
 
 We want to rotate it `(270 + 90 * action)` degrees. This way when `0` is given as an action we turn left,
 `1` we travel straight, and `2` turn right.
 
-To achive this we apply a rotation matrix. If a matrix is applied to it self it gives us a matrix
+To achieve this we apply a rotation matrix. If a matrix is applied to itself it gives us a matrix
 that is equivalent to applying the transformation twice. Therefore, we can take the direction
-vector and apply a 90 degree couter-clockwise rotation matrix raised to the power of `3 + action`.
+vector and apply a 90-degree counter-clockwise rotation matrix raised to the power of `3 + action`.
 
 Finally, we add the current position to this new direction vector to produce the next. Then we
 take the new location, and pairwise mod it with the size of the board to generate the loop
@@ -109,11 +109,11 @@ pos_next = (pos_cur + (pos_cur - pos_prev) @ rotation) % T(snake.shape)
 
 ## How to die
 
-Ah, the age old question. Oh wait, what were we talking about? Thats right, snakes, never mind!
+Ah, the age-old question. Oh wait, what were we talking about? That's right, snakes, never mind!
 
 Since we now have the next position it is fairly trivial to figure out whether the snake should
 die or not. We just have to check if `snake[touple(pos_next)] > 0` since the only values with more then
-`0` on our board is values where the snake currently is.
+`0` on our board is the value where the snake currently is.
 
 If the snake is dying then we want to return the score of the current game. This is also fairly
 trivial since the score of the game is the same as the length of the snake minus 2 (assuming
@@ -130,18 +130,18 @@ if (snake[tuple(pos_next)] > 0).any():
 
 ![How to eat diagram](imgs/snake-eat.drawio.svg)
 
-Time to brace yourself, the next 3 lines is the most complicated in the game.
+Time to brace yourself, the next 3 lines are the most complicated in the game.
 
 To check if the snake is eating we check if `snake[pos_next]` is `-1`. If this is the case
-then we need to find all positions on the board which currently is currently `0`. This
-is empty spots which we can pontentially put food.
+then we need to find all positions on the board which currently is `0`. These
+are empty spots where we can potentially put food.
 
 When we have all of these positions we need to select one of these indexes at random,
 then update that value to be `-1`. We don't need to edit the current `-1` entry as
 the snake will overwrite it when it moves.
 
-To find all the places that is currently `0` we just use `snake == 0` (this returns
-a boolean tensor). Next we do `.multinomial(1)` on this select one at random. However,
+To find all the places that are currently `0` we just use `snake == 0` (this returns
+a boolean tensor). Next, we do `.multinomial(1)` on this select one at random. However,
 `multinomial` works the same way as `topk` as well as only taking floats. Therefore,
 we need to do both `.flatten()` and `.to(t.float)` first.
 
@@ -158,15 +158,15 @@ if snake[tuple(pos_next)] == -1:
 
 ![Diagram moving](imgs/snake-move.drawio.svg)
 
-In order to move the snake we shrink the current snake and append a new head at
+To move the snake, we shrink the current snake and append a new head at
 the next position.
 
 However, we only want to shrink the snake if we are not eating, because if we are
-then we want to extend the size with 1 square.
+then we want to extend the size to 1 square.
 
 Therefore, we append an else clause on the previous if statement to shrink the snake.
 Since the snake is numbered and the last tail cell is 1 we can subtract one from every
-cell on the grid larger then 0. This will shrink the snake by 1 cell.
+cell on the grid larger than 0. This will shrink the snake by 1 cell.
 
 To append the new head we need to set the next position to the value of the current
 position plus 1.
@@ -184,9 +184,9 @@ So, that's it. There you go. Snake in 12 lines.
 
 Oh, you want to play it as well?!
 
-Originally this was written as a RL environment so I had no interface for it, but
-for you I'll make one, but it'll cost you 15 more lines. Classic user interface
-code, always has to be so complicated...
+Originally this was written as an RL environment so I had no interface for it, but
+for you, I'll make one, but it'll cost you 15 more lines. Classic user interface
+code always has to be so complicated...
 
 Here you go:
 
@@ -214,6 +214,6 @@ while score is None:
 print('Score:', score)
 ```
 
-So, now you can play snakes till your heart content. But, remember, if you think this
-was too easy, this only the first Snaketronics article. This was mearly a pre-requisite.
-I've got somthing juicy in the pipeline. So stay on the look out!
+So, now you can play snakes to your heart's content. But, remember, if you think this
+was too easy, this is only the first Snaketronics article. This was merely a pre-requisite.
+I've got something juicy in the pipeline. So stay on the lookout!
