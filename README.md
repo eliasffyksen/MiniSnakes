@@ -1,7 +1,5 @@
 # How to write a game of snake in 12 lines of code
 
-
-
 First of all a want to declare this article the founding document of snaketronics.
 
 > Snaketronics:
@@ -179,3 +177,43 @@ else:
 
 snake[tuple(pos_next)] = snake[tuple(pos_cur)] + 1
 ```
+
+## Interface
+
+So, that's it. There you go. Snake in 12 lines.
+
+Oh, you want to play it as well?!
+
+Originally this was written as a RL environment so I had no interface for it, but
+for you I'll make one, but it'll cost you 15 more lines. Classic user interface
+code, always has to be so complicated...
+
+Here you go:
+
+```python
+snake = t.zeros((32, 32), dtype=t.int)
+snake[0, :3] = T([1, 2, -1])
+
+fig, ax = plt.subplots(1, 1)
+img = ax.imshow(snake)
+action = {'val': 1}
+action_dict = {'a': 0, 'd': 2}
+action_dict.setdefault(1)
+
+fig.canvas.mpl_connect('key_press_event', lambda e:
+                       action.__setitem__('val', action_dict[e.key]))
+
+score = None
+while score is None:
+    img.set_data(snake)
+    fig.canvas.draw_idle()
+    plt.pause(0.1)
+    score = do(snake, action['val'])
+    action['val'] = 1
+
+print('Score:', score)
+```
+
+So, now you can play snakes till your heart content. But, remember, if you think this
+was too easy, this only the first Snaketronics article. This was mearly a pre-requisite.
+I've got somthing juicy in the pipeline. So stay on the look out!

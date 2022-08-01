@@ -20,9 +20,9 @@
 ** DONE How to eat
 *** DONE Text
 *** DONE Illustration
-** TODO How to move
-*** TODO Text
-*** TODO Illustration
+** DONE How to move
+*** DONE Text
+*** DONE Illustration
 ** TODO Interface
 *** TODO Text
 *** TODO Illustration
