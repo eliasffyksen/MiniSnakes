@@ -177,12 +177,30 @@ else:
 
 snake[tuple(pos_next)] = snake[tuple(pos_cur)] + 1
 ```
-
-## Interface
+## Summary
 
 So, that's it. There you go. Snake in 12 lines.
 
-Oh, you want to play it as well?!
+```python
+def do(snake: t.Tensor, action: int):
+    positions = snake.flatten().topk(2)[1]
+    [pos_cur, pos_prev] = [T(unravel(x, snake.shape)) for x in positions]
+    rotation = T([[0, -1], [1, 0]]).matrix_power(3 + action)
+    pos_next = (pos_cur + (pos_cur - pos_prev) @ rotation) % T(snake.shape)
+
+    if (snake[tuple(pos_next)] > 0).any():
+        return (snake[tuple(pos_cur)] - 2).item()
+    if snake[tuple(pos_next)] == -1:
+        pos_food = (snake == 0).flatten().to(t.float).multinomial(1)[0]
+        snake[unravel(pos_food, snake.shape)] = -1
+    else:
+        snake[snake > 0] -= 1
+
+    snake[tuple(pos_next)] = snake[tuple(pos_cur)] + 1
+```
+
+## Interface
+
 
 Originally this was written as an RL environment so I had no interface for it, but
 for you, I'll make one, but it'll cost you 15 more lines. Classic user interface
